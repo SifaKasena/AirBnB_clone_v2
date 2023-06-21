@@ -142,9 +142,8 @@ class HBNBCommand(cmd.Cmd):
                         setattr(new_instance, attr_name, float(attr_value))
                     else:
                         setattr(new_instance, attr_name, attr_value)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
