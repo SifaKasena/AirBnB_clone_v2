@@ -5,9 +5,27 @@ import models
 from models.base_model import BaseModel, Base
 from os import getenv
 import sqlalchemy
-from sqlalchemy import Column, String, Integer, Float
+from sqlalchemy import Column, String, Integer, Float, Table
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
+
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column(
+                             'place_id',
+                             String(60),
+                             ForeignKey('places.id'),
+                             primary_key=True,
+                             nullable=False
+                             ),
+                      Column(
+                             'amenity_id',
+                             String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True,
+                             nullable=False
+                             )
+                      )
 
 
 class Place(BaseModel, Base):
@@ -26,6 +44,10 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True)
         reviews = relationship("Review", cascade="all, delete",
                                backref="places")
+        amenities = relationship("Amenity",
+                                 secondary='place_amenity',
+                                 back_populates="place_amenities",
+                                 viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -38,3 +60,27 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+    @property
+    def amenities(self):
+        """
+        Getter attribute amenities that returns the list of Amenity
+        instances based on the attribute amenity_ids that
+        contains all Amenity.id linked to the Place
+        """
+        obj_list = []
+        amenities_objects = models.storage.all('Amenity')
+        for amenity in amenities_objects.values():
+            if amenity.id in amenity_ids:
+                obj_list.append(amenity)
+            return obj_list
+
+    @amenities.setter
+    def amenitites(self, obj):
+        """
+        Setter attribute amenities that handles append method
+        for adding an Amenity.id to the attribute amenity_ids
+        """
+        if isinstance(obj, Amenity):
+            if self.id == obj.place_id:
+                self.amenity_ids.append(obj.id)
