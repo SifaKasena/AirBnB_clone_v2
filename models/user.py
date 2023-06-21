@@ -7,9 +7,15 @@ from sqlalchemy.orm import relationship
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
-    __tablename__ = 'users'
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128), nullable=False)
-    last_name = Column(String(128), nullable=False)
-    places = relationship('Place', backref='user')
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        __tablename__ = 'users'
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128), nullable=False)
+        last_name = Column(String(128), nullable=False)
+        places = relationship('Place', backref='user')
+    else:
+        email = ""
+        _password = ""
+        first_name = ""
+        last_name = ""
