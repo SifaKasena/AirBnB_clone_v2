@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-"""This script distributes an archive to web servers
+"""This script creates and distributes an archive to web servers
 
-Usage: fab -f 2-do_deploy_web_static.py do_deploy<ARCHIVE> <SSH KEY>
+Usage: fab -f 3-deploy_web_static.py do_deploy<ARCHIVE> <SSH KEY>
 """
 from fabric.api import *
 from datetime import datetime
@@ -9,8 +9,32 @@ import os
 
 
 env.hosts = ['54.157.179.66', '54.236.28.100']
-env.user = 'ubuntu'
-env.key_filename = '~/.ssh/school'
+
+
+def do_pack():
+    """
+    Generates a .tgz archive from the contents of the web_static folder.
+    """
+    now = datetime.now()
+    archive_path = "versions/web_static_{}{}{}{}{}{}.tgz".format(now.year,
+                                                                 now.month,
+                                                                 now.day,
+                                                                 now.hour,
+                                                                 now.minute,
+                                                                 now.second)
+    print("Packing web_static to {}".format(archive_path))
+    try:
+        local("mkdir -p versions")
+        output = local("tar -czvf {} web_static/".format(archive_path))
+        if output.succeeded:
+            size = os.path.getsize(archive_path)
+            print("web_static packed: {} -> {}Bytes".
+                  format(archive_path, size))
+            return archive_path
+        return None
+
+    except Exception as e:
+        return None
 
 
 def do_deploy(archive_path):
@@ -62,3 +86,11 @@ def do_deploy(archive_path):
     except Exception:
         return False
     return True
+
+
+def deploy():
+    """Create and distribute archive to web server(s)"""
+    archive = do_pack()
+    if archive is None:
+        return False
+    return do_deploy(archive)
