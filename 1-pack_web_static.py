@@ -14,7 +14,10 @@ def do_pack():
     print("Packing web_static to {}".format(archive_path))
     try:
         local("mkdir -p versions")
-        local("tar -czvf {} web_static/".format(archive_path))
+        output = local("tar -czvf {} web_static/".format(archive_path))
+        if output.failed:
+            return None
+
         size = os.path.getsize(archive_path)
         print("web_static packed: {} -> {}Bytes".format(archive_path, size))
         return archive_path
