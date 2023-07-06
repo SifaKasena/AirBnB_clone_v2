@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""This script generates a .tgz archive from web_static folder
+
+Usage: fab -f 1-pack_web_static.py do_pack
+"""
 from fabric.api import local
 from datetime import datetime
 import os
