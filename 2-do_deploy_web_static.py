@@ -30,7 +30,7 @@ def do_deploy(archive_path):
 
         # Create target directory for deployment
         run('sudo mkdir -p /data/web_static/releases/{}/'.format(archive_name))
-236
+
         # Extract the uploaded archive.tgz file
         run('sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/'.
             format(archive_name, archive_name))
