@@ -8,7 +8,7 @@ from datetime import datetime
 import os
 
 
-env.hosts = ['54.236.28.100']
+env.hosts = ['54.157.179.66', '54.236.28.100']
 env.user = 'ubuntu'
 env.key_filename = '~/.ssh/id_rsa'
 
@@ -30,7 +30,7 @@ def do_deploy(archive_path):
 
         # Create target directory for deployment
         run('sudo mkdir -p /data/web_static/releases/{}/'.format(archive_name))
-
+236
         # Extract the uploaded archive.tgz file
         run('sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/'.
             format(archive_name, archive_name))
