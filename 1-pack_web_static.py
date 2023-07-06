@@ -19,11 +19,12 @@ def do_pack():
     try:
         local("mkdir -p versions")
         output = local("tar -czvf {} web_static/".format(archive_path))
-        if output.failed:
-            return None
+        if output.succeeded:
+            size = os.path.getsize(archive_path)
+            print("web_static packed: {} -> {}Bytes".
+                  format(archive_path, size))
+            return archive_path
+        return None
 
-        size = os.path.getsize(archive_path)
-        print("web_static packed: {} -> {}Bytes".format(archive_path, size))
-        return archive_path
     except Exception as e:
         return None
