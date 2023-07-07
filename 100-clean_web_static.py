@@ -43,4 +43,4 @@ def do_clean(number=0):
             folders.pop()
 
         for folder in folders:
-            run("rm -rf ./{}".format(folder))
+            run("sudo rm -rf ./{}".format(folder))
