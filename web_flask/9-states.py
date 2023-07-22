@@ -18,7 +18,9 @@ app = Flask(__name__, template_folder='templates')
 def state():
     """Displays a HTML page with list of states"""
     states = storage.all(State)
-    return render_template('9-states.html', states=states, render_for='states_list')
+    return render_template('9-states.html',
+                           states=states,
+                           render_for='states_list')
 
 
 @app.route('/states/<id>', strict_slashes=False)
@@ -31,8 +33,12 @@ def state_by_id(id):
     """
     for state in storage.all(State).values():
         if state.id == id:
-            return render_template('9-states.html', states=state, render_for='cities_list')
-    return render_template('9-states.html', states=state, render_for='404')
+            return render_template('9-states.html',
+                                   states=state,
+                                   render_for='cities_list')
+    return render_template('9-states.html',
+                           states=state,
+                           render_for='404')
 
 
 @app.teardown_appcontext
