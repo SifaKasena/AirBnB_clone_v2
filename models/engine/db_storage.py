@@ -107,3 +107,7 @@ class DBStorage:
         Close the current session if active
         """
         self.__session.remove()
+
+    def close(self):
+        """Removes active session"""
+        self.__session.remove()
