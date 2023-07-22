@@ -18,18 +18,24 @@ app = Flask("__name__")
 
 @app.route('/', strict_slashes=False)
 def hello():
-    """Return Hello HBNB!"""
+    """Returns Hello HBNB!"""
     return ("Hello HBNB!")
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """Return HBNB"""
+    """Returns HBNB"""
     return ("HBNB")
 
 
 @app.route('/c/<text>', strict_slashes=False)
 def display_c(text):
+    """
+    Returns C followed by <text>
+
+    Args:
+        text: The parameter passed by user in the URL
+    """
     return "C {}".format(text.replace('_', ' '))
 
 

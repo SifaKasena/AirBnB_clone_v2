@@ -34,12 +34,24 @@ def hbnb():
 
 @app.route('/c/<text>', strict_slashes=False)
 def display_c(text):
+    """
+    Returns C followed by <text>
+
+    Args:
+        text: The parameter passed by user in the URL
+    """
     return "C {}".format(text.replace('_', ' '))
 
 
 @app.route('/python/', defaults={'text': 'is_cool'}, strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def display_python(text):
+    """
+    Returns Python followed by <text>
+
+    Args:
+        text: The parameter passed by user in the URL
+    """
     return "Python {}".format(text.replace('_', ' '))
 
 
