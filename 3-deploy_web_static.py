@@ -10,6 +10,7 @@ from fabric.api import local, env, put, run
 
 env.hosts = ['18.234.106.203', '54.236.12.250']
 
+
 def do_pack():
     """
     Generates a .tgz archive from the contents of the web_static folder.
@@ -38,32 +39,37 @@ def do_deploy(archive_path):
     Returns:
         bool: True if the deployment was successful, False otherwise.
     """
-    if not os.path.exists(archive_path):
-        return False
-    
     try:
+        if not os.path.exists(archive_path):
+            return False
+
         put(archive_path, "/tmp/")
 
         archive_filename = os.path.basename(archive_path)
         archive_name = os.path.splitext(archive_filename)[0]
+
         run(f"sudo mkdir -p /data/web_static/releases/{archive_name}/")
-        run(f"sudo tar -xzf /tmp/{archive_name}.tgz -C /data/web_static/releases/{archive_name}/")
+        run(f"sudo tar -xzf /tmp/{archive_name}.tgz -C\
+            /data/web_static/releases/{archive_name}/")
         run(f"sudo rm -rf /tmp/{archive_name}.tgz")
         run("sudo rm -rf /data/web_static/current")
-        run(f"sudo ln -sf /data/web_static/releases/{archive_name} /data/web_static/current")
+        run(f"sudo ln -sf /data/web_static/releases/{archive_name}\
+            /data/web_static/current")
         return True
+
     except Exception:
         return False
-   
+
+
 def deploy():
     """
     Deploys the web static content to the web servers.
-    
+
     Returns:
         bool: True if deployment is successful, False otherwise.
     """
     archive_path = do_pack()
     if not archive_path:
         return False
-    
+
     return do_deploy(archive_path)
