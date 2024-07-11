@@ -36,7 +36,8 @@ def do_deploy(archive_path):
         run("sudo rm -rf /data/web_static/current")
         run(f"sudo ln -sf /data/web_static/releases/{archive_name}\
             /data/web_static/current")
-        return True
 
     except Exception:
         return False
+
+    return True
