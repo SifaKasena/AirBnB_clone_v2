@@ -34,6 +34,9 @@ def do_deploy(archive_path):
             /data/web_static/releases/{archive_name}/")
         run(f"sudo rm -rf /tmp/{archive_name}.tgz")
         run("sudo rm -rf /data/web_static/current")
+        run(f"sudo mv /data/web_static/releases/{archive_name}/web_static/*\
+            /data/web_static/releases/{archive_name}/")
+        run(f"sudo rm -rf /data/web_static/releases/{archive_name}/web_static")
         run(f"sudo ln -sf /data/web_static/releases/{archive_name}/\
             /data/web_static/current")
 
